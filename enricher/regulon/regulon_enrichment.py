@@ -300,7 +300,7 @@ def logger(**kwargs):
     now = datetime.datetime.now()
     ensure_dir(relnm)
     out_f = open(os.path.join(relnm, '{}_kwargs.txt'.format(cohort)), 'w')
-    out_f.write("EnrichR generated regulon, enrichment scores and scaled expression data-set compiled on "
+    out_f.write("Enricher generated regulon, enrichment scores and scaled expression data-set compiled on "
                 "{} with the following **kwargs \n".
                 format(now.strftime("%Y-%m-%d %H:%M")))
     for k, v in kwargs.items():

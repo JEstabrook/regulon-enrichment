@@ -75,6 +75,9 @@ class Enrichment(object):
         self.total_enrichment = None
         self.regulators = None
         self.quant_nes = None
+        self.r_frame = None
+        self.f_frame = None
+        self.p_frame = None
 
     def __str__(self):
         return """------\nCohort: {}\nn-features: {}\nn-samples: {}\nscaler: {}\nscaled:\
@@ -113,9 +116,7 @@ class Enrichment(object):
         Returns:
             scaled_frame (:obj: `pandas DataFrame`) : pandas DataFrame containing
                 scaled expression data of shape [n_samples, n_features]
-
         """
-
         # By default, the input is checked to be a non-empty 2D array containing
         # only finite values.
         _ = check_array(expr)
@@ -162,7 +163,6 @@ class Enrichment(object):
             filtered_regulon (:obj: `pandas DataFrame`) : pandas DataFrame containing weight
                 interactions between regulator and downstream members of its regulon of shape :
                 [len(Target), ['Regulator','Target','MoA','likelihood']
-
         """
 
         expr_filtered_regulon = regulon[
@@ -189,7 +189,6 @@ class Enrichment(object):
 
         Returns:
             weights_ordered (:obj:`pd.DataFrame`), shape = [n_interactions, 3]
-
         """
 
         sub_regul = pruned_regulon[(pruned_regulon['UpGene'] == regulator)]
@@ -218,8 +217,6 @@ class Enrichment(object):
                 standard | robust | minmax | quant
             thresh_filter (float): Prior to normalization remove features that do not have
                 the mean unit of a feature (i.e. 1 tpm) is greater than {thresh_filter}
-
-
         """
         self.scaler_type = scaler_type
         self.expr = self._preprocess_data(self.expr, self.scaler_type, thresh_filter)
@@ -232,13 +229,18 @@ class Enrichment(object):
         """
         if not self.scaled:
             warnings.warn('Assigning interaction weights without scaling dataset!')
-
+        # TODO  add Transpose call to non-scaled processed dataset
         pruned_regulon = self._prune_regulon(self.expr, self.regulon, self.regulon_size)
         # noinspection PyTypeChecker
-        r, p = regulon_utils.spearmanr(self.expr)
+        if not [x for x in (self.p_frame, self.r_frame) if x is None]:
+            print('Proceeding with previous correlation matrix')
+        else:
+            r, p = regulon_utils.spearmanr(self.expr)
 
-        r_frame = pd.DataFrame(r, columns=self.expr.columns, index=self.expr.columns)
-        p_frame = pd.DataFrame(p, columns=self.expr.columns, index=self.expr.columns)
+            r_frame = pd.DataFrame(r, columns=self.expr.columns, index=self.expr.columns)
+            p_frame = pd.DataFrame(p, columns=self.expr.columns, index=self.expr.columns)
+            self.r_frame = r_frame
+            self.p_frame = p_frame
 
         F_statistics = {regulator: regulon_utils.f_regression(
             self.expr.reindex(frame.DownGene, axis=1),
@@ -248,8 +250,8 @@ class Enrichment(object):
         weights = pd.concat([self._structure_weights(regulator,
                                                      pruned_regulon,
                                                      F_statistics,
-                                                     r_frame,
-                                                     p_frame)
+                                                     self.r_frame,
+                                                     self.p_frame)
                              for regulator in F_statistics])
 
         self.regulon_weights = weights[~np.isinf(weights.MoA)]
