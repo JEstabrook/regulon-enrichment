@@ -14,7 +14,7 @@ import timeit
 
 
 
-def load_sif():
+def load_sif(sif_file):
     return pd.read_csv(sif_file, names = ['UpGene', 'Type', 'DownGene'], sep = '\t', header = None)
 
 

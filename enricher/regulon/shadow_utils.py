@@ -84,7 +84,7 @@ def calculate_overlap(enr, regulators = ['CEBPA', 'STAT5A', 'STAT5B', 'FOS', 'JU
     return selected_shadow_regulators
 
 
-def intersect_and_replace(enr, comb, seed):
+def intersect_and_replace(enr, comb, seed):q
     """ Intersects regualtor pairs regulon space and replaces overlapping set with random edges
 
     Args:
