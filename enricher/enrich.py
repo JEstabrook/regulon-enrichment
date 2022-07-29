@@ -138,9 +138,9 @@ class Enrichment(object):
         expr_t = expr[(expr.std(axis=1) > thresh_filter)].T
 
         print('--- Centering features with {} scaler ---'.format(scaler_type))
-        scaled_frame = pd.DataFrame(scaler.fit_transform(expr_lt),
-                                    index=expr_lt.index,
-                                    columns=expr_lt.columns)
+        scaled_frame = pd.DataFrame(scaler.fit_transform(expr_t),
+                                    index=expr_t.index,
+                                    columns=expr_t.columns)
 
         return scaled_frame
 
