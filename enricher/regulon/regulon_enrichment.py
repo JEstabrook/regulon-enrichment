@@ -15,7 +15,7 @@ def assign_weights(lh):
         wts (pandas DataFrame): sparse DataFrame indicating likelihood for regulators
     """
     # Generate normalized likelihood weights
-    wts = lh.T.divide(lh.max(axis = 1)).T
+    # wts = lh.T.divide(lh.max(axis = 1)).T
     wts = wts.fillna(0.0)
 
     # Absolute gene expression signature

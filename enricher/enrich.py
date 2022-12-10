@@ -199,7 +199,8 @@ class Enrichment(object):
         p_.name = 'likelihood'
         f_ = f_statistics[regulator][0]
         r_ = r_frame.loc[targs, regulator]
-        w_ = (f_ + abs(r_)) * np.sign(r_)
+        # w_ = (f_ + abs(r_)) * np.sign(r_)
+        w_ = (f_ * abs(r_)) * np.sign(r_)
         w_.index.name = 'Target'
         w_.name = 'MoA'
         weights = w_.to_frame()
