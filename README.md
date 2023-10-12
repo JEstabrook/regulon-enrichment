@@ -1,5 +1,10 @@
 ![Build Status](https://travis-ci.com/JEstabrook/regulon-enrichment.svg?token=ZRDWBWe9sXCivP1NrZwq&branch=master)  [![](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/release/python-367) ![t](https://img.shields.io/badge/license-MIT-nrightgreen.svg) ![t](https://img.shields.io/badge/status-stable-nrightgreen.svg) ![t](https://zenodo.org/badge/179752059.svg)
 
+---
+
+:warning: **ARCHIVED REPOSITORY**: This repository has been archived and is no longer maintained. Please visit the current repository at [https://github.com/ohsu-comp-bio/regulon-enrichment](https://github.com/ohsu-comp-bio/regulon-enrichment) for the latest updates and active development.
+
+---
 
 # Enrich
 
